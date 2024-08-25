@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import json
 import tiktoken
@@ -8,6 +9,16 @@ from typing import List, Dict
 import logging
 
 app = FastAPI()
+
+@app.middleware("http")
+async def increase_payload_size(request: Request, call_next):
+    if request.method == "POST":
+        payload_size = int(request.headers.get("content-length", 0))
+        max_size = 100 * 1024 * 1024  # 100MB
+        if payload_size > max_size:
+            return JSONResponse(status_code=413, content={"detail": "Payload too large"})
+    response = await call_next(request)
+    return response
 
 # CORSミドルウェアを追加
 app.add_middleware(
