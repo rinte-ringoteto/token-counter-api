@@ -12,7 +12,7 @@ app = FastAPI()
 # CORSミドルウェアを追加
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001","http://localhost:3001","https://ft-trainingfile-creator-nitr5lvdc-rinteringotetos-projects.vercel.app"],
+    allow_origins=["http://localhost:3000","http://localhost:3001","https://ft-trainingfile-creator.vercel.app"],
     # allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],  # すべてのHTTPメソッドを許可
